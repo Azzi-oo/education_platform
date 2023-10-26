@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'embed_video',
     'debug_toolbar',
     'redisboard',
+    'rest_framework',
+    'chat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +77,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
 
 CACHE_MIDDLEWARE_ALIAS = 'default'
@@ -135,3 +144,14 @@ CACHES = {
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+ASGI_APPLICATION = 'educa.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
