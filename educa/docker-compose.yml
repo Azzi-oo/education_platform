@@ -10,6 +10,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
+  cache:
+    image: redis:7.0.4
+    restart: always
+    volumes:
+      - ./data/cache:/data
+
   web:
     build: .
     command: python /code/educa/manage.py runserver 0.0.0.0:8000
@@ -25,4 +31,14 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+      - cache
+  
+  nginx:
+    image: nginx:1.23.1
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - .:/code
+    ports:
+      - "80:80"
 
